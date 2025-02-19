@@ -1,5 +1,5 @@
 <script setup lang="ts">
-let {data: users}: any = await useFetch("https://jsonplaceholder.typicode.com/users")
+let {data: users}: any = await useFetch("http://146.190.108.44:8888/users")
 </script>
 
 <template>
