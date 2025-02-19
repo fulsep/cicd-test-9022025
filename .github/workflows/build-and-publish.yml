@@ -8,6 +8,7 @@ permissions:
 jobs:
   Build-And-Publish:
     runs-on: ubuntu-latest
+    environment: SSH_AGENT
     steps:
       - uses: actions/checkout@v2
       - name: Build and publish a Docker image for ${{ github.repository }}
@@ -15,3 +16,8 @@ jobs:
         with:
           image_name: ${{ github.repository }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Pulling latest image on server
+        run: ssh -o StrictHostKeyChecking=no root@${{ secrets.SERVER_DEPLOY }} "cd ~/webapp;docker pull ghcr.io/fulsep/cicd-test-9022025;docker compose up frontend -d"
